@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Slide</title>
+    <style>
+      .wrap {
+        width: 70%;
+        height: 100px;
+        position: relative;
+        background-color: rgb(54, 54, 53);
+        margin: 0 auto;
+      }
+
+      .slider-container {
+        display: flex;
+        justify-content: space-between;
+        overflow: hidden;
+      }
+
+      .slider-item {
+        width: calc(25% - 10px);
+        height: 100px;
+        background-color: #f0f0f0;
+        margin-right: 10px;
+        border-radius: 10px;
+        border: 1px solid #e1e1e1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="slider-container">
+        <div class="slider-item">Slide 1</div>
+        <div class="slider-item">Slide 2</div>
+        <div class="slider-item">Slide 3</div>
+        <div class="slider-item">Slide 4</div>
+        <div class="slider-item">Slide 5</div>
+        <div class="slider-item">Slide 6</div>
+        <div class="slider-item">Slide 7</div>
+      </div>
+    </div>
+    <script>
+      const wrap = document.querySelector(".wrap");
+      const sliderContainer = document.querySelector(".slider-container");
+      wrap.addEventListener("mousedown", (e) => {
+        wrap.style.cursor = "grabbing";
+        sliderContainer.style.userSelect = "none"; //글자 선택방지
+        sliderContainer.style.pointerEvents = "none"; //다른 이벤트 무시
+
+        // 드래그 중에 마우스 이동을 기록하는데 사용됨
+        let startX = e.pageX;
+        // 현재 슬라이더 컨테이너의 가로 스크롤 위치를 지정
+        let scrollLeft = sliderContainer.scrollLeft;
+        // 드래그 동작 중에 슬라이더를 움직이는 역할
+        function mousemove(e) {
+          // 현재 마우스 위치와 클릭한 위치 사이의 차이를 계산하여
+          // 드래그 중에 이동해야 할 거리
+          const x = e.pageX - startX;
+          // 슬라이더 컨테이너의 가로 스크롤 위치를 업데이트하여
+          // 드래그 동작에 따라 슬라이더를 이동합니다
+          sliderContainer.scrollLeft = scrollLeft - x;
+        }
+        wrap.addEventListener("mousemove", mousemove);
+        wrap.addEventListener("mouseup", () => {
+          wrap.style.cursor = "grab";
+          sliderContainer.style.scrollBehavior = "smooth";
+          sliderContainer.style.userSelect = "auto"; //글자 선택방지
+          sliderContainer.style.pointerEvents = "auto"; //다른 이벤트 무시
+          wrap.removeEventListener("mousemove", mousemove);
+        });
+      });
+    </script>
+  </body>
+</html>
